@@ -7,6 +7,7 @@ def fetch_url(url, path):
 
 def random_html_image(html):
     # find a random image in the html and return its http address in quotes
+
     d = html.split(" ")
     urls = []
     for i in d:
@@ -17,12 +18,18 @@ def random_html_image(html):
         i = i[5:-1]
         urls.append(i)
 
-    return random.choice(urls)
+    if len(urls) > 0:
+        return random.choice(urls)
 
-def extract_urls(html,folder):
-    folder =  "C:\\Users\\Dimitris\\Desktop\\DeviantArt\\"+folder
+    return -1
+
+def extract_urls(html,question):
+    folder =  "C:\\Users\\Dimitris\\Desktop\\DeviantArt\\"+question
 
     url = random_html_image(html)
+    if url == -1:
+            return -1
+
     name = url.split('/')[-1]
 
     if not os.path.isdir(folder):
@@ -36,16 +43,20 @@ def generate_questions():
     terms = []
     with open("C:\\Users\\Dimitris\\Desktop\\DeviantArt\\Terms.txt") as f:
         for line in f:
+            line = line.replace("\n","")
             terms.append(line)
+
     return random.choice(terms)
 
 def main_routine():
     foundation = "http://www.deviantart.com/browse/all/?q="
     question = generate_questions()
 
-    response = urllib.urlopen(foundation+question)
+    n = random.randint(0, 10000)
+    response = urllib.urlopen(foundation+question+"&offset="+str(n))
     html = response.read()
 
-    extract_urls(html,question)
+    extract_urls(html, question)
 
-main_routine()
+for i in range(10):
+    main_routine()
