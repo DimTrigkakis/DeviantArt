@@ -1,3 +1,4 @@
+import sys
 import urllib
 import os
 import random
@@ -58,5 +59,6 @@ def main_routine():
 
     extract_urls(html, question)
 
-for i in range(10):
-    main_routine()
+a = sys.argv[1]
+for i in range(int(a)):
+    	main_routine()
